@@ -38,14 +38,29 @@ export async function POST(req) {
       writableStream.write(Buffer.from(result.value));
     }
 
-    writableStream.end();
+    // Wait for the writable stream to finish before changing ownership and permissions
+    writableStream.on("finish", () => {
+      try {
+        // Change ownership of the file (replace with the correct user and group IDs)
+        fs.chownSync(filePath, 1000, 1000); // Adjust user and group IDs as needed
 
-    // Set file permissions to ensure it's accessible
-    fs.chmodSync(filePath, "644"); // Readable by others
+        // Set file permissions to be readable by others (644)
+        fs.chmodSync(filePath, "644");
+
+        console.log("File permissions and ownership updated.");
+      } catch (permissionError) {
+        console.error(
+          "Error setting file permissions or ownership:",
+          permissionError
+        );
+      }
+    });
+
+    writableStream.end();
 
     return NextResponse.json({
       message: "File uploaded successfully",
-      file: { path: `/images/${path.basename(filePath)}` }, // Accessible path from public folder
+      file: { path: `/images/${path.basename(filePath)}` },
     });
   } catch (error) {
     console.error("Error uploading file:", error);
@@ -55,7 +70,6 @@ export async function POST(req) {
     );
   }
 }
-// src/app/api/images/route.ts
 
 export async function GET() {
   try {
