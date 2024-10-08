@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation";
 // src/app/gallery/page.tsx
 import React, { useEffect, useState } from "react";
 
-const page = () => {
+const Page = () => {
   const router = useRouter();
   // Function to fetch image filenames from the uploads directory
   const fetchImages = async () => {
@@ -64,4 +64,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;
