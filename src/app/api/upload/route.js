@@ -3,13 +3,12 @@ import fs from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
 
-const uploadDir = path.join(process.cwd(), "public");
+const uploadDir = path.join(process.cwd(), "public", "images");
 
 // Create the uploads directory if it doesn't exist
 if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir);
+  fs.mkdirSync(uploadDir, { recursive: true }); // Ensure recursive for deep folders
 }
-
 export async function POST(req) {
   try {
     // Get the form data from the request
@@ -41,9 +40,12 @@ export async function POST(req) {
 
     writableStream.end();
 
+    // Set file permissions to ensure it's accessible
+    fs.chmodSync(filePath, "644"); // Readable by others
+
     return NextResponse.json({
       message: "File uploaded successfully",
-      file: { path: filePath },
+      file: { path: `/images/${path.basename(filePath)}` }, // Accessible path from public folder
     });
   } catch (error) {
     console.error("Error uploading file:", error);
@@ -53,7 +55,6 @@ export async function POST(req) {
     );
   }
 }
-
 // src/app/api/images/route.ts
 
 export async function GET() {

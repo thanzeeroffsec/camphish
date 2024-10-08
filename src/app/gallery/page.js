@@ -50,7 +50,7 @@ const Page = () => {
           {images.map((src, index) => (
             <div key={index} className="border rounded overflow-hidden">
               <img
-                src={`${src}`}
+                src={`images/${src}`}
                 alt={`Uploaded Image ${index + 1}`}
                 className="w-full h-auto object-cover"
               />
