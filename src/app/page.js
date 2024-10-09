@@ -89,7 +89,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className=" absolute top-0 w-1/3">
+      <div className=" absolute top-0 w-full h-full -z-10">
         <div className="absolute w-full h-full bg-[#F9FAFB]"></div>
 
         <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} />
