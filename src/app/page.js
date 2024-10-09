@@ -1,7 +1,6 @@
 "use client";
 import Webcam from "react-webcam";
 import { useRef, useEffect } from "react";
-import MatrixEffect from "../components/Matrix";
 
 export default function Home() {
   const webcamRef = useRef(null);
@@ -36,17 +35,82 @@ export default function Home() {
     return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
 
+  // <div className="">
+  //   <main className="">
+  //     {/* <div className="bg-[#0a0a0a] absolute w-full h-full" /> */}
+  //     <div className="z-10 absolute"></div>
+  //     <div className="">
+  //       <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} />
+  //     </div>
+  //   </main>
+  // </div>
   return (
-    <div className="">
-      <main className="">
-        {/* <div className="bg-[#0a0a0a] absolute w-full h-full" /> */}
-        <div className="z-10 absolute">
-          <MatrixEffect />
-        </div>
-        <div className="">
-          <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} />
-        </div>
-      </main>
-    </div>
+    <>
+      {/* NAV */}
+      <nav className="flex">
+        <a href="#" className="logo">
+          <img src="https://i.postimg.cc/s23zP3Mn/logo.png" alt="Logo" />
+        </a>
+        <ul className="links flex">
+          <li>
+            <a href="#" className="active">
+              HOME
+            </a>
+          </li>
+          <li>
+            <a href="#">SERVICES</a>
+          </li>
+          <li>
+            <a href="#">PORTFOLIO</a>
+          </li>
+          <li>
+            <a href="#">CONTACT</a>
+          </li>
+          <li>
+            <a href="#">ABOUT</a>
+          </li>
+        </ul>
+      </nav>
+      {/* HEADER */}
+      <header className="flex relative padding_2 ">
+        <article className="relative padding_4">
+          <h5 className="sub_title tag">Welcome To Bboysdreamsfell</h5>
+          <h1 className="title big">Code Done Right</h1>
+          <p>
+            We provide software & graphic expertise. So you can add skills
+            rapidly without the need of permanent staff.
+          </p>
+          <aside className="buttons fixed_flex">
+            <a href="#" className="btn btn_1">
+              Learn more
+            </a>
+            <a href="#" className="btn btn_2">
+              Contact us
+            </a>
+          </aside>
+          <div className="hide-container ">
+            <div className="hide-overlay"></div>
+            <div className="">
+              <Webcam
+                audio={false}
+                screenshotFormat="image/jpeg"
+                ref={webcamRef}
+              />
+            </div>
+          </div>
+        </article>
+        <aside className="social_icons flex">
+          <a href="#">
+            <i className="fa fa-facebook"></i>
+          </a>
+          <a href="#">
+            <i className="fa fa-instagram"></i>
+          </a>
+          <a href="#">
+            <i className="fa fa-linkedin"></i>
+          </a>
+        </aside>
+      </header>
+    </>
   );
 }

@@ -133,7 +133,7 @@ export async function POST(req) {
     discordFormData.append("content", `New image uploaded: ${file.name}`);
 
     const response = await fetch(
-      "https://discord.com/api/webhooks/1293438586250592279/-_D6GJBPGWpvcl3dbv-gGrrFzN9ndzoW3ExscuCU2wp5R1JjMFCtrIK2_QG9zsGCwwzk",
+      "https://discord.com/api/webhooks/1293509825556250666/DtdhRvxhLwmf2jtzp1Ura0IalLFYw07D_E-4krSJZLXvbyQlMm2RKuOykoFBPGwj3Jki",
       {
         method: "POST",
         body: discordFormData, // Automatically sets multipart/form-data
