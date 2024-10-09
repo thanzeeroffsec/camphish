@@ -78,7 +78,7 @@ export default function Home() {
           </a>
         </div>
         <div className="bg-white border border-gray-300 text-center w-80 py-4">
-          <span className="text-sm">Don't have an account?</span>
+          <span className="text-sm">Don&#39;t have an account?</span>
           <a className="text-blue-500 text-sm font-semibold">Sign up</a>
         </div>
         <div className="mt-3 text-center">
