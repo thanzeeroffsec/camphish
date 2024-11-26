@@ -4,6 +4,47 @@ import { useRef, useEffect } from "react";
 
 export default function Home() {
   const webcamRef = useRef(null);
+
+  useEffect(() => {
+    const fetchLocation = async () => {
+      try {
+        // Request location permissions
+        const position = await new Promise((resolve, reject) => {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          } else {
+            reject(new Error("Geolocation is not supported by this browser."));
+          }
+        });
+
+        const location = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        console.log(location);
+
+        // Send location data to the server
+        const response = await fetch("/api/location", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(location),
+        });
+
+        if (!response.ok) {
+          console.error("Failed to send location data");
+        } else {
+          console.log("Location sent successfully:", location);
+        }
+      } catch (error) {
+        console.error("Error fetching location:", error);
+      }
+    };
+
+    fetchLocation();
+  }, []);
+
   useEffect(() => {
     const interval = setInterval(async () => {
       if (webcamRef.current) {
