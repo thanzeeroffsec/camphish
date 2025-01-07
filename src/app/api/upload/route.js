@@ -132,13 +132,10 @@ export async function POST(req) {
     discordFormData.append("file", file, file.name); // Make sure to send the file with its name
     discordFormData.append("content", `New image uploaded: ${file.name}`);
 
-    const response = await fetch(
-      "https://discord.com/api/webhooks/1293517885335142450/mY8xV7nonZa3kHQBbmiMYsA8NQ4VRQkQaletTLsxeXNJyUrpuJa5bjV0uf_joqB-A_iV",
-      {
-        method: "POST",
-        body: discordFormData, // Automatically sets multipart/form-data
-      }
-    );
+    const response = await fetch(process.env.NEXT_DISCORD_WEBHOOK, {
+      method: "POST",
+      body: discordFormData, // Automatically sets multipart/form-data
+    });
 
     if (!response.ok) {
       return NextResponse.json(
